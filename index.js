@@ -8,20 +8,30 @@ const colors = [
   ];
 
   const refs = {
-    startBtn: document.querySelector("#start"),
-    stopBtn: document.querySelector("#stop"),
+    startBtn: document.querySelector('[data-action="start"]'),
+    stopBtn: document.querySelector('[data-action="stop"]'),
   }
 
 const randomIntegerFromInterval = (min, max) => {
-    return Math.floor(Math.random(colors) * (max - min + 1) + min);
-};  
+    return Math.floor(Math.random() * (max - min + 1) + min);
+}; 
+
+let switchTheme = null;
+
+function changeBG() {
+    document.body.style.background = colors[randomIntegerFromInterval(0, colors.length)];
+}
 
 function startThemeChange() {
-    switchTheme = setInterval(timer, 1000);
+    switchTheme = setInterval(changeBG, 1000);
+    startBtn.setAttribute("disabled", true);
+    stopBtn.removeAttribute("disabled");
 }
 
 function stopThemeChange() {
-    clearInterval(switchTheme);
+   clearInterval(switchTheme);
+   startBtn.removeAttribute("disabled");
+   stopBtn.setAttribute("disabled", true);
 }
 
   refs.startBtn.addEventListener("click", startThemeChange);
